@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 
+
 namespace AssignmentNoTwo
 {
     class HangMan
@@ -26,7 +27,27 @@ namespace AssignmentNoTwo
                         break;
                 }
             } while (op != 3);
-    }// End of main method
+        }// End of main method
+
+        //Impimentaion of random string generater function
+        static string RandomStringGenerator()
+        {
+            string[] listwords = new string[10];
+            listwords[0] = "sheep";
+            listwords[1] = "goat";
+            listwords[2] = "computer";
+            listwords[3] = "america";
+            listwords[4] = "watermelon";
+            listwords[5] = "icecream";
+            listwords[6] = "jasmine";
+            listwords[7] = "pineapple";
+            listwords[8] = "orange";
+            listwords[9] = "mango";
+            Random randomGen = new Random();
+            int randomNumber = randomGen.Next(0, 9);
+            string randomString = listwords[randomNumber];
+            return randomString;
+        }
 
         //IImpimentation of guess by word function
         static void GuessByWord()
@@ -54,25 +75,7 @@ namespace AssignmentNoTwo
             else
                 Console.WriteLine("You Won the Game");
         }
-        //Impimentaion of random string generater function
-        static string RandomStringGenerator()
-        { 
-            string[] listwords = new string[10];
-            listwords[0] = "sheep";
-            listwords[1] = "goat";
-            listwords[2] = "computer";
-            listwords[3] = "america";
-            listwords[4] = "watermelon";
-            listwords[5] = "icecream";
-            listwords[6] = "jasmine";
-            listwords[7] = "pineapple";
-            listwords[8] = "orange";
-            listwords[9] = "mango";
-            Random randomGen = new Random();
-            int randomNumber = randomGen.Next(0, 9);
-            string randomString = listwords[randomNumber];
-            return randomString;
-        }
+
         //Impimentation Get by charecter function
         static void GuessByChar()
         {
@@ -116,19 +119,38 @@ namespace AssignmentNoTwo
             if (!st.Equals(randomString))
                 Console.WriteLine("You Lost  the Game");
         }
+
         //Implimentaion of user input selection function
         static int UserInputNumber()
         {
             int number = 0;
-            Console.WriteLine("Welcome to Hangman!!!!!!!!!!");
-            Console.WriteLine("Enter 1 to Play a Game, Guess by Word");
-            Console.WriteLine("Enter 2 to play a Game, Guess by Charecter");
-            string input = Console.ReadLine();
-            if (!int.TryParse(input, out number))
-                Console.WriteLine("Please enter valid input number");
+            bool wasNotNumber = true;
+            do
+            {
+                try
+                {
+                    Console.WriteLine("Welcome to Hangman!!!!!!!!!!");
+                    Console.WriteLine("Enter 1 to Play a Game, Guess by Word");
+                    Console.WriteLine("Enter 2 to play a Game, Guess by Charecter");
+                    number = int.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("must enter somthing");
+                }
+                catch (ArgumentNullException)
+                {
+                    Console.WriteLine("was unable to read your number");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("The number was too big");
+                }
+            } while (!wasNotNumber);
             
             return number;
         }
+
         //Impimentation of capturing wrong input charecter entered by player function
         static void CheckValue(char playerGuessChar, string randomString)
         {
