@@ -92,13 +92,8 @@ namespace AssignmentNoTwo
 
             while (guessCount < 10 && !istrue)
             {
-                string str = Console.ReadLine();
-
-                if (!char.TryParse(str, out playerGuess))
-                   Console.WriteLine("Please Enter valid Charecter");
-
+                 playerGuess = UserInputChar();
                     guessCount++;
-
                     for (int j = 0; j < randomString.Length; j++)
                     {
                         if (playerGuess == randomString[j])
@@ -149,6 +144,29 @@ namespace AssignmentNoTwo
             } while (!wasNotNumber);
             
             return number;
+        }
+
+        //Implimentaion of user input char value
+        static char UserInputChar()
+        {
+            bool isValidKey = true;
+            char ch = ' ';
+            do
+            {
+                try
+                {
+                     ch = char.Parse(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("must enter correct format");
+                }
+                catch (ArgumentNullException)
+                {
+                    Console.WriteLine("was unable to read your number");
+                }
+            } while (!isValidKey);
+            return ch;
         }
 
         //Impimentation of capturing wrong input charecter entered by player function
