@@ -80,11 +80,13 @@ namespace AssignmentNoTwo
             char playerGuess;
             string st = "";
             string randomString = RandomStringGenerator();
-            Console.WriteLine(randomString);
             char[] randomChar = randomString.ToCharArray();
             Console.WriteLine("Enter Your Guess Charecter");
             for (int i = 0; i < randomChar.Length; i++)
+            {
                 randomChar[i] = '_';
+                
+            }
 
             bool istrue = false;
             while (guessCount < 10 && !istrue)
@@ -99,9 +101,12 @@ namespace AssignmentNoTwo
                     if (playerGuess == randomString[j])
                     {
                         randomChar[j] = playerGuess;
+                     
                     }
                 }
-                Console.WriteLine(randomChar);
+                for (int k = 0; k < randomString.Length; k++)
+                    Console.Write("\t " + randomChar[k]);
+
                 Console.WriteLine("Guess: " + playerGuess);
                 CheckValue(playerGuess, randomString);
                  st = new string(randomChar);
