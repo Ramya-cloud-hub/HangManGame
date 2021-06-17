@@ -79,42 +79,39 @@ namespace AssignmentNoTwo
             int guessCount = 0;
             char playerGuess;
             string st = "";
+            bool istrue = false;
+
             string randomString = RandomStringGenerator();
             char[] randomChar = randomString.ToCharArray();
             Console.WriteLine("Enter Your Guess Charecter");
             for (int i = 0; i < randomChar.Length; i++)
-            {
                 randomChar[i] = '_';
-                
-            }
 
-            bool istrue = false;
             while (guessCount < 10 && !istrue)
             {
                 string str = Console.ReadLine();
+
                 if (!char.TryParse(str, out playerGuess))
-                    Console.WriteLine("Please Enter valid Charecter");
+                   Console.WriteLine("Please Enter valid Charecter");
 
-                guessCount++;
-                for (int j = 0; j < randomString.Length; j++)
-                {
-                    if (playerGuess == randomString[j])
+                    guessCount++;
+
+                    for (int j = 0; j < randomString.Length; j++)
                     {
-                        randomChar[j] = playerGuess;
-                     
+                        if (playerGuess == randomString[j])
+                            randomChar[j] = playerGuess;
                     }
-                }
-                for (int k = 0; k < randomString.Length; k++)
-                    Console.Write("\t " + randomChar[k]);
+                
+                    PrintFunction(randomChar, randomString, playerGuess);
+                    CheckValue(playerGuess, randomString);
+                    st = new string(randomChar);
 
-                Console.WriteLine("Guess: " + playerGuess);
-                CheckValue(playerGuess, randomString);
-                 st = new string(randomChar);
-                if (st.Equals(randomString))
-                {
-                    istrue = true;
-                    Console.WriteLine("You Won the Game");
-                }
+                    if (st.Equals(randomString))
+                    {
+                        istrue = true;
+                        Console.WriteLine("You Won the Game");
+                    }
+                
             } // End of while loop
             if (!st.Equals(randomString))
                 Console.WriteLine("You Lost  the Game");
@@ -143,7 +140,17 @@ namespace AssignmentNoTwo
                 sb.Append(playerGuessChar);                       
             }         
             Console.WriteLine("Missing: " + sb);           
-        }                  
+        }  
+
+        //Implimentation of print guessing values
+        static void PrintFunction(char[] randomChar, string randomString, char playerGuess)
+        {
+            for (int k = 0; k < randomString.Length; k++)
+                Console.Write("\t " + randomChar[k]);
+
+            Console.WriteLine("");
+            Console.WriteLine("Guess: " + playerGuess);
+        }
     }
 }
 
