@@ -4,9 +4,10 @@ using System.Text;
 
 namespace AssignmentNoTwo
 {
-    class HangMan
+    public class HangMan
     {
       static StringBuilder sb = new StringBuilder();
+      static StringBuilder sb2 = new StringBuilder();
         static void Main(string[] args)
         {
             int op = 0;
@@ -30,7 +31,7 @@ namespace AssignmentNoTwo
         }// End of main method
 
         //Impimentaion of random string generater function
-        static string RandomStringGenerator()
+        public static string RandomStringGenerator()
         {
             string[] listwords = new string[10];
             listwords[0] = "sheep";
@@ -50,7 +51,7 @@ namespace AssignmentNoTwo
         }
 
         //IImpimentation of guess by word function
-        static void GuessByWord()
+        public static void GuessByWord()
         {
             string userGuessString = "";
             string randomString = RandomStringGenerator();    
@@ -77,7 +78,7 @@ namespace AssignmentNoTwo
         }
 
         //Impimentation Get by charecter function
-        static void GuessByChar()
+     public static void GuessByChar()
         {
             int guessCount = 0;
             char playerGuess;
@@ -96,7 +97,7 @@ namespace AssignmentNoTwo
                     guessCount++;
                     for (int j = 0; j < randomString.Length; j++)
                     {
-                        if (playerGuess == randomString[j])
+                        if (playerGuess.Equals(randomString[j]))
                             randomChar[j] = playerGuess;
                     }
                 
@@ -114,9 +115,8 @@ namespace AssignmentNoTwo
             if (!st.Equals(randomString))
                 Console.WriteLine("You Lost  the Game");
         }
-
         //Implimentaion of user input selection function
-        static int UserInputNumber()
+        public static int UserInputNumber()
         {
             int number = 0;
             bool wasNotNumber = true;
@@ -147,15 +147,23 @@ namespace AssignmentNoTwo
         }
 
         //Implimentaion of user input char value
-        static char UserInputChar()
+        public static char UserInputChar()
         {
+             
             bool isValidKey = true;
+            bool isCharPresent = false;
             char ch = ' ';
             do
             {
                 try
                 {
                      ch = char.Parse(Console.ReadLine());
+                    isCharPresent = CheckCharDuplicate(ch);
+                    if (isCharPresent)
+                    {
+                        Console.WriteLine("You are not allowed to guess the same charecter twice\n Please guess the proper charecter");
+                        UserInputChar();
+                    }
                 }
                 catch (FormatException)
                 {
@@ -170,7 +178,7 @@ namespace AssignmentNoTwo
         }
 
         //Impimentation of capturing wrong input charecter entered by player function
-        static void CheckValue(char playerGuessChar, string randomString)
+        public static void CheckValue(char playerGuessChar, string randomString)
         {
             StringBuilder sb1 = new StringBuilder();
             if (randomString.Contains(playerGuessChar))
@@ -180,16 +188,33 @@ namespace AssignmentNoTwo
                 sb.Append(playerGuessChar);                       
             }         
             Console.WriteLine("Missing: " + sb);           
-        }  
+        }
 
         //Implimentation of print guessing values
-        static void PrintFunction(char[] randomChar, string randomString, char playerGuess)
+        public static void PrintFunction(char[] randomChar, string randomString, char playerGuess)
         {
             for (int k = 0; k < randomString.Length; k++)
                 Console.Write("\t " + randomChar[k]);
 
             Console.WriteLine("");
             Console.WriteLine("Guess: " + playerGuess);
+        }
+        public static bool CheckCharDuplicate(char guessChar)
+        {
+            char[] userInputCharList = null;
+            bool isPresent = false;
+            sb2.Append(guessChar);
+            userInputCharList = sb2.ToString().ToCharArray();
+            
+            for(int i=0; i<userInputCharList.Length; i++)
+            {  
+                    for (int j = i + 1; j < userInputCharList.Length; j++)
+                    {
+                        if (userInputCharList[i]==(userInputCharList[j]))
+                            isPresent = true;
+                    }            
+            }
+            return isPresent;
         }
     }
 }
