@@ -8,8 +8,12 @@ namespace AssignmentNoTwo
     {
       static StringBuilder sb = new StringBuilder();
       static StringBuilder sb2 = new StringBuilder();
+       public string st;
         static void Main(string[] args)
         {
+            HangMan obj = new HangMan();
+            Print p = new Print();
+            p.PrintScreen();
             int op = 0;
             do
             {
@@ -18,10 +22,10 @@ namespace AssignmentNoTwo
                 switch (op)
                 {
                     case 1:
-                        GuessByWord();
+                        obj.GuessByWord();
                         break;
                     case 2:
-                        GuessByChar();
+                       obj.GuessByChar();
                         break;
                     default:
                         Console.WriteLine("Press 3 to exit from the game");
@@ -51,7 +55,7 @@ namespace AssignmentNoTwo
         }
 
         //IImpimentation of guess by word function
-        public static void GuessByWord()
+        public  void GuessByWord()
         {
             string userGuessString = "";
             string randomString = RandomStringGenerator();    
@@ -78,29 +82,32 @@ namespace AssignmentNoTwo
         }
 
         //Impimentation Get by charecter function
-     public static void GuessByChar()
+     public  void GuessByChar()
         {
             int guessCount = 0;
             char playerGuess;
             string st = "";
             bool istrue = false;
+            bool isSameChar = true;
 
             string randomString = RandomStringGenerator();
             char[] randomChar = randomString.ToCharArray();
-            Console.WriteLine("Enter Your Guess Charecter");
             for (int i = 0; i < randomChar.Length; i++)
                 randomChar[i] = '_';
 
             while (guessCount < 10 && !istrue)
             {
-                 playerGuess = UserInputChar();
+                 playerGuess = UserInputChar();//User input char function
+                 isSameChar = CheckRepeatChar(playerGuess); //Funtion calling to check user entered same char twice
+                if (isSameChar)
+                { 
                     guessCount++;
                     for (int j = 0; j < randomString.Length; j++)
                     {
                         if (playerGuess.Equals(randomString[j]))
                             randomChar[j] = playerGuess;
                     }
-                
+
                     PrintFunction(randomChar, randomString, playerGuess);
                     CheckValue(playerGuess, randomString);
                     st = new string(randomChar);
@@ -110,7 +117,9 @@ namespace AssignmentNoTwo
                         istrue = true;
                         Console.WriteLine("You Won the Game");
                     }
-                
+                }
+                else
+                    Console.WriteLine("You are not allowed to guess same Character twice");   
             } // End of while loop
             if (!st.Equals(randomString))
                 Console.WriteLine("You Lost  the Game");
@@ -126,7 +135,7 @@ namespace AssignmentNoTwo
                 {
                     Console.WriteLine("Welcome to Hangman!!!!!!!!!!");
                     Console.WriteLine("Enter 1 to Play a Game, Guess by Word");
-                    Console.WriteLine("Enter 2 to play a Game, Guess by Charecter");
+                    Console.WriteLine("Enter 2 to play a Game, Guess by character");
                     number = int.Parse(Console.ReadLine());
                 }
                 catch (FormatException)
@@ -147,23 +156,16 @@ namespace AssignmentNoTwo
         }
 
         //Implimentaion of user input char value
-        public static char UserInputChar()
-        {
-             
-            bool isValidKey = true;
-            bool isCharPresent = false;
+         public char UserInputChar()
+        {   
+            bool isValidKey = true;  
             char ch = ' ';
             do
             {
                 try
                 {
-                     ch = char.Parse(Console.ReadLine());
-                    isCharPresent = CheckCharDuplicate(ch);
-                    if (isCharPresent)
-                    {
-                        Console.WriteLine("You are not allowed to guess the same charecter twice\n Please guess the proper charecter");
-                        UserInputChar();
-                    }
+                    Console.WriteLine("Enter Your Guess character");
+                    ch = char.Parse(Console.ReadLine());               
                 }
                 catch (FormatException)
                 {
@@ -178,7 +180,7 @@ namespace AssignmentNoTwo
         }
 
         //Impimentation of capturing wrong input charecter entered by player function
-        public static void CheckValue(char playerGuessChar, string randomString)
+        public void CheckValue(char playerGuessChar, string randomString)
         {
             StringBuilder sb1 = new StringBuilder();
             if (randomString.Contains(playerGuessChar))
@@ -186,36 +188,58 @@ namespace AssignmentNoTwo
             else
             {
                 sb.Append(playerGuessChar);                       
-            }         
-            Console.WriteLine("Missing: " + sb);           
-        }
-
-        //Implimentation of print guessing values
-        public static void PrintFunction(char[] randomChar, string randomString, char playerGuess)
-        {
-            for (int k = 0; k < randomString.Length; k++)
-                Console.Write("\t " + randomChar[k]);
-
-            Console.WriteLine("");
-            Console.WriteLine("Guess: " + playerGuess);
-        }
-        public static bool CheckCharDuplicate(char guessChar)
-        {
-            char[] userInputCharList = null;
-            bool isPresent = false;
-            sb2.Append(guessChar);
-            userInputCharList = sb2.ToString().ToCharArray();
-            
-            for(int i=0; i<userInputCharList.Length; i++)
-            {  
-                    for (int j = i + 1; j < userInputCharList.Length; j++)
-                    {
-                        if (userInputCharList[i]==(userInputCharList[j]))
-                            isPresent = true;
-                    }            
             }
+            Console.WriteLine("");
+            Console.WriteLine("Wrong Guesses: " +sb);           
+        }
+
+        //Implimentation of print guessing values.
+        public void PrintFunction(char[] randomChar, string randomString, char playerGuess)
+        {
+            for (int k = 0; k < randomString.Length; k++) 
+                Console.Write("\t " + randomChar[k]);
+            
+            Console.WriteLine("");
+            Console.WriteLine("Your Guess: " + playerGuess);
+        }
+
+        //Implimentation of if the player guesses the same letter twice, the program will not consume a guess.
+      public  bool CheckRepeatChar(char guessChar)
+        {
+            char[] userInputCharList;
+            bool isPresent = true;
+         
+            sb2.Append(guessChar);
+            st = sb2.ToString();
+            userInputCharList = st.ToCharArray();
+            int length = userInputCharList.Length;
+            Console.WriteLine(userInputCharList);
+            int index = 0;
+            int j = 0; int i = 0;
+            //loop to find repeated char 
+            for ( i = 0; i < length; i++)
+            {
+                for ( j = 0 ; j < i; j++)
+                {
+                    //If any duplicate found 
+                  
+                    if (userInputCharList[i] == userInputCharList[j])
+                    {
+                        isPresent = false;
+                        break;
+                    }        
+                }
+                if (j == i)
+                    userInputCharList[index++] = userInputCharList[i];
+            }
+            char[] ans = new char[index];
+            Array.Copy(userInputCharList, ans, index);
+            sb2.Clear();
+            sb2.Append(ans);
+
             return isPresent;
         }
+
     }
 }
 
