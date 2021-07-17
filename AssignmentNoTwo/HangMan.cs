@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Text;
-
 
 namespace AssignmentNoTwo
 {
@@ -38,14 +39,14 @@ namespace AssignmentNoTwo
         public static string RandomStringGenerator()
         {
             string[] listwords = new string[10];
-            listwords[0] = "sheep";
+            listwords[0] = "money";
             listwords[1] = "goat";
             listwords[2] = "computer";
-            listwords[3] = "america";
-            listwords[4] = "watermelon";
-            listwords[5] = "icecream";
+            listwords[3] = "river";
+            listwords[4] = "phone";
+            listwords[5] = "forest";
             listwords[6] = "jasmine";
-            listwords[7] = "pineapple";
+            listwords[7] = "prince";
             listwords[8] = "orange";
             listwords[9] = "mango";
             Random randomGen = new Random();
@@ -85,12 +86,15 @@ namespace AssignmentNoTwo
      public  void GuessByChar()
         {
             int guessCount = 0;
+            int currectGuessCountThree = 0;
             char playerGuess;
             string st = "";
             bool istrue = false;
             bool isSameChar = true;
+             
 
             string randomString = RandomStringGenerator();
+            Console.WriteLine(randomString);
             char[] randomChar = randomString.ToCharArray();
             for (int i = 0; i < randomChar.Length; i++)
                 randomChar[i] = '_';
@@ -101,28 +105,32 @@ namespace AssignmentNoTwo
                  isSameChar = CheckRepeatChar(playerGuess); //Funtion calling to check user entered same char twice
                 if (isSameChar)
                 { 
-                    guessCount++;
+                    guessCount ++;
+                    
                     for (int j = 0; j < randomString.Length; j++)
                     {
                         if (playerGuess.Equals(randomString[j]))
+                        {
                             randomChar[j] = playerGuess;
+                            currectGuessCountThree++;
+                        }
                     }
 
                     PrintFunction(randomChar, randomString, playerGuess);
                     CheckValue(playerGuess, randomString);
                     st = new string(randomChar);
-
-                    if (st.Equals(randomString))
+                    if (currectGuessCountThree == 3)
                     {
-                        istrue = true;
-                        Console.WriteLine("You Won the Game");
+                        GuessTheRemainingWord(guessCount, randomString);
+                        break;
+
                     }
+             
                 }
                 else
                     Console.WriteLine("You are not allowed to guess same Character twice");   
             } // End of while loop
-            if (!st.Equals(randomString))
-                Console.WriteLine("You Lost  the Game");
+          
         }
         //Implimentaion of user input selection function
         public static int UserInputNumber()
@@ -136,6 +144,7 @@ namespace AssignmentNoTwo
                     Console.WriteLine("Welcome to Hangman!!!!!!!!!!");
                     Console.WriteLine("Enter 1 to Play a Game, Guess by Word");
                     Console.WriteLine("Enter 2 to play a Game, Guess by character");
+                    Console.WriteLine("Enter 3 to Exit from the Game!");
                     number = int.Parse(Console.ReadLine());
                 }
                 catch (FormatException)
@@ -212,32 +221,49 @@ namespace AssignmentNoTwo
             sb2.Append(guessChar);
             st = sb2.ToString();
             userInputCharList = st.ToCharArray();
-            int length = userInputCharList.Length;
-            Console.WriteLine(userInputCharList);
-            int index = 0;
-            int j = 0; int i = 0;
+            int length = userInputCharList.Length;         
+            
             //loop to find repeated char 
-            for ( i = 0; i < length; i++)
+           for (int i = 0; i < length; i++)
             {
-                for ( j = 0 ; j < i; j++)
+                for (int j = i + 1; j < length; j++)
                 {
-                    //If any duplicate found 
-                  
+                    //If any duplicate found
                     if (userInputCharList[i] == userInputCharList[j])
                     {
-                        isPresent = false;
-                        break;
-                    }        
+                        isPresent =false;
+                        st =  st.Remove(st.Length-1, 1);
+                        sb2.Clear();
+                        sb2.Append(st);
+                    }
+                             
                 }
-                if (j == i)
-                    userInputCharList[index++] = userInputCharList[i];
-            }
-            char[] ans = new char[index];
-            Array.Copy(userInputCharList, ans, index);
-            sb2.Clear();
-            sb2.Append(ans);
 
+            }  
             return isPresent;
+        }
+      public void  GuessTheRemainingWord(int guessCount , string randomString)
+        {
+            string userGuessString = "";
+            int guessLimit = 10;
+            bool outOfGuesses = false;
+            while (userGuessString != randomString && !outOfGuesses)
+            {
+                if (guessCount < guessLimit)
+                {
+                    Console.WriteLine("Now guess the whole word: ");
+                    userGuessString = Console.ReadLine();
+                    guessCount++;
+                }
+                else
+                {
+                    outOfGuesses = true;
+                }
+            }
+            if (outOfGuesses)
+                Console.WriteLine("You Loose");
+            else
+                Console.WriteLine("You Won the Game");
         }
 
     }
