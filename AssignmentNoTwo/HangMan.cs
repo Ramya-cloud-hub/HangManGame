@@ -12,6 +12,7 @@ namespace AssignmentNoTwo
        public string st;
         static void Main(string[] args)
         {
+
             HangMan obj = new HangMan();
             Print p = new Print();
             p.PrintScreen();
