@@ -77,9 +77,9 @@ namespace AssignmentNoTwo
                 }
             }
             if (outOfGuesses)
-                Console.WriteLine("You Loose");
+                Console.WriteLine("You Lost the Game\n");
             else
-                Console.WriteLine("You Won the Game");
+                Console.WriteLine("You Won the Game\n");
         }
 
         //Impimentation Get by charecter function
@@ -119,7 +119,7 @@ namespace AssignmentNoTwo
                     PrintFunction(randomChar, randomString, playerGuess);
                     CheckValue(playerGuess, randomString);
                     st = new string(randomChar);
-                    if (currectGuessCountThree > 3)
+                    if (currectGuessCountThree >=3 )
                     {
                         GuessTheRemainingWord(guessCount, randomString);
                         break;
@@ -261,9 +261,9 @@ namespace AssignmentNoTwo
                 }
             }
             if (outOfGuesses)
-                Console.WriteLine("You Loose");
+                Console.WriteLine("You Lost the Game\n");
             else
-                Console.WriteLine("You Won the Game");
+                Console.WriteLine("You Won the Game\n");
         }
 
     }
