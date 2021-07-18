@@ -39,12 +39,12 @@ namespace AssignmentNoTwo
         public static string RandomStringGenerator()
         {
             string[] listwords = new string[10];
-            listwords[0] = "money";
+            listwords[0] = "america";
             listwords[1] = "goat";
             listwords[2] = "computer";
             listwords[3] = "river";
-            listwords[4] = "phone";
-            listwords[5] = "forest";
+            listwords[4] = "yellow";
+            listwords[5] = "summer";
             listwords[6] = "jasmine";
             listwords[7] = "prince";
             listwords[8] = "orange";
@@ -119,7 +119,7 @@ namespace AssignmentNoTwo
                     PrintFunction(randomChar, randomString, playerGuess);
                     CheckValue(playerGuess, randomString);
                     st = new string(randomChar);
-                    if (currectGuessCountThree == 3)
+                    if (currectGuessCountThree > 3)
                     {
                         GuessTheRemainingWord(guessCount, randomString);
                         break;
